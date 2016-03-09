@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node id="node1">
+		<result type="SUCCESS"></result>
+		<result type="FAILURE"></result>
+		<result type="REDIRECT">node2</result>
+	</node>
+	<node id="node2">
+		<result type="SUCCESS"></result>
+	</node>
+</nodes>
