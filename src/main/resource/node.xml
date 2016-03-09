@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nodes>
-	<node id="node1">
+	<node id="node1" class="org.dcq.workflow.node.StarterService">
 		<result type="SUCCESS"></result>
 		<result type="FAILURE"></result>
 		<result type="REDIRECT">node2</result>
 	</node>
-	<node id="node2">
+	<node id="node2" class="org.dcq.workflow.node.EndService">
 		<result type="SUCCESS"></result>
 	</node>
 </nodes>

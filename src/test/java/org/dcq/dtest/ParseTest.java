@@ -11,9 +11,10 @@ public class ParseTest{
 	@Test
 	public void testNode(){
 		try {
-			NodeXmlDriver sax = new NodeXmlDriver();
 			InputStream input = this.getClass().getClassLoader().getResourceAsStream("node.xml");
-			List<DriverNode> nodes = sax.getNodes(input);
+			List<DriverNode> nodes = NodeXmlDriver.getNodes(input);
+			
+			
 			for(DriverNode node : nodes){
 				System.out.println(node.toString());
 			}
@@ -21,9 +22,6 @@ public class ParseTest{
 			System.out.println(e);
 			// TODO: handle exception
 		}
-		
 	}
-	
-	
 	
 }

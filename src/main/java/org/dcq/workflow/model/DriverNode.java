@@ -7,10 +7,23 @@ public class DriverNode {
 
 	@Override
 	public String toString() {
-		return "DriverNode [id=" + id + ", results=" + results + "]";
+		return "DriverNode [id=" + id + ", invokeName=" + invokeName
+				+ ", results=" + results + "]";
 	}
 
 	private String id;
+	
+	private String invokeName;
+	
+
+	public String getInvokeName() {
+		return invokeName;
+	}
+
+	public void setInvokeName(String invokeName) {
+		this.invokeName = invokeName;
+	}
+
 	private Map<String,String> results = new LinkedHashMap<String,String>() ;
 
 	public String getId() {

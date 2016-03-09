@@ -1,7 +1,8 @@
 package org.dcq.workflow.xmlreader;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -14,7 +15,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class NodeXmlDriver extends DefaultHandler{
 	private static SAXParser parser;
-	private List<DriverNode> nodes = new ArrayList<DriverNode>();
+	private List<DriverNode> nodes = new LinkedList<DriverNode>();
 
 	private DriverNode node = null;
 	private String preTag = null;//作用是记录解析时的上一个节点名称
@@ -29,26 +30,34 @@ public class NodeXmlDriver extends DefaultHandler{
 				SAXParserFactory factory = SAXParserFactory.newInstance();
 				parser = factory.newSAXParser();
 			}
-			
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 	}
 	
-	public List<DriverNode> getNodes(InputStream xmlStream) throws Exception{
+	public static List<DriverNode> getNodes(InputStream xmlStream){
 		NodeXmlDriver driver = new NodeXmlDriver();
-		parser.parse(xmlStream, driver);
+		try {
+			
+			parser.parse(xmlStream, driver);
+			
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return driver.getNodes();
 	}
     
 	
-	public List<DriverNode> getNodes() throws Exception{
+	public List<DriverNode> getNodes(){
 		return nodes;
 	}
 	
 	@Override
 	public void startDocument() throws SAXException {
-		nodes = new ArrayList<DriverNode>();
+		nodes = new LinkedList<DriverNode>();
 	}
 	
 	@Override
@@ -57,9 +66,14 @@ public class NodeXmlDriver extends DefaultHandler{
 		if("node".equals(qName)){
 			node = new DriverNode();
 			node.setId(attributes.getValue("id"));
+			node.setInvokeName(attributes.getValue("class"));
 		}
+		if("result".equalsIgnoreCase(qName)){
+			preAttrType = attributes.getValue("type");
+			node.addResults(preAttrType, null);
+		}
+
 		preTag = qName;//将正在解析的节点名称赋给preTag
-		preAttrType = attributes.getValue("type");
 	}
 
 	@Override
@@ -80,8 +94,8 @@ public class NodeXmlDriver extends DefaultHandler{
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		if(preTag!=null){
 			String content = new String(ch,start,length);
-			if("result".equals(preTag)){
-				node.addResults(preAttrType, content);
+			if("result".equalsIgnoreCase(preTag)){
+				node.getResults().put(preAttrType, content);
 			}
 		}
 	}
